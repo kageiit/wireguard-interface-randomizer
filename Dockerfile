@@ -1,9 +1,17 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi
+FROM alpine:latest
+RUN apk add --no-cache netcat-openbsd
 
-COPY ./app /app
+WORKDIR /app
+ENV PATH="/app:${PATH}"
+COPY run /app
+RUN chmod 755 /app/*
 
-# Wireguard interface configs go in /data/config
-VOLUME /data/config
+# Wireguard interface configs go in /config
+VOLUME /config
 
-# Wireguard interface dir is /data/interface
-VOLUME /data/interface
+# Wireguard interface dir is /interface
+VOLUME /interface
+
+EXPOSE 80
+
+CMD ["run"]

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+while true; do (
+    echo -e 'HTTP/1.0 200 OK\r\n'
+    random_interface=$(ls /config | xargs shuf -n1 -e)
+    cp "/config/$random_interface" "/interface/wg0.conf"
+    echo "Using interface $random_interface"
+) | nc -l -p 80 -q 1; done
